@@ -11,3 +11,8 @@ spec:
   type: website
   owner: john@example.com
   lifecycle: experimental
+
+catalog:
+  locations:
+    - type: url
+      target: https://github.com/Papliba/papliba/blob/main/papliba2-component.yaml
