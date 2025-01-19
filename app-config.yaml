@@ -10,8 +10,7 @@ backend:
   # See https://backstage.io/docs/auth/service-to-service-auth for
   # information on the format
   # auth:
-  #   keys:
-  #     - secret: ${BACKEND_SECRET}
+  #   keys: - secret: ${BACKEND_SECRET}
   baseUrl: http://localhost:7007
   listen:
     port: 7007
@@ -72,33 +71,79 @@ scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
 
 catalog:
+  providers:
+    microsoftGraphOrg:
+      default:
+        tenantId: ${AZURE_TENANT_ID}
+        user:
+          filter: accountEnabled eq true and userType eq 'member'
+        group:
+          filter: >
+            securityEnabled eq false
+            and mailEnabled eq true
+            and groupTypes/any(c:c+eq+'Unified')
+        schedule:
+          frequency: PT1H
+          timeout: PT50M
   import:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
   rules:
-    - allow: [Component, System, API, Resource, Location]
+    - allow: [Component,System,API,Resource,Location,Domain,Template,user,group,department]
   locations:
-    # Local example data, file locations are relative to the backend process, typically `packages/backend`
-    - type: file
-      target: ../../examples/entities.yaml
+
+    # External catalog data
+    # - type: url
+    #   target: https://github.com/Papliba/backstage-entities/blob/main/all.yaml
+
+    # # Organization data
+    # - type: url
+    #   target: https://github.com/Papliba/backstage-entities/blob/main/organization/papliba.yaml
+    #
+    # # Department data
+    # - type: url
+    #   target: https://github.com/Papliba/backstage-entities/blob/main/departments/c-suite.yaml
+
+    # # Domain data
+    # - type: url
+    #   target: https://github.com/Papliba/backstage-entities/blob/main/domains/azure-landing-zones.yaml
+    #
+    # # Shared landing zones
+    # - type: url
+    #   target: https://github.com/Papliba/backstage-entities/blob/main/systems/shared-landing-zones.yaml
+    #
+    # # Standard landing zones
+    # - type: url
+    #   target: https://github.com/Papliba/backstage-entities/blob/main/systems/standard-landing-zones.yaml
+    #
+    # # Platform landing zones
+    # - type: url
+    #   target: https://github.com/Papliba/backstage-entities/blob/main/systems/platform-landing-zones.yaml
+
+    # # Groups
+    # - type: url
+    #   target: https://github.com/Papliba/backstage-entities/blob/main/users/developers.yaml
+    #
+    # ---------
 
     # Local example template
-    - type: file
-      target: ../../examples/template/template.yaml
-      rules:
-        - allow: [Template]
+    # - type: file
+    #   target: ../../examples/template/template.yaml
+    #   rules:
+    #     - allow: [Template]
 
     # Local example organizational data
-    - type: file
-      target: ../../examples/org.yaml
-      rules:
-        - allow: [User, Group]
+    # - type: file
+    #   target: ../../examples/org.yaml
+    #   rules:
+    #     - allow: [User, Group]
 
-    ## Uncomment these lines to add more example data
-    # - type: url
-    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all.yaml
+    # Local example data, file locations are relative to the backend process, typically `packages/backend`
+    # - type: file
+    #   target: ../../examples/entities.yaml
 
-    ## Uncomment these lines to add an example org
+  
+    # Uncomment these lines to add an example org
     # - type: url
     #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme-corp.yaml
     #   rules:
