@@ -71,20 +71,6 @@ scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
 
 catalog:
-  providers:
-    microsoftGraphOrg:
-      default:
-        tenantId: ${AZURE_TENANT_ID}
-        user:
-          filter: accountEnabled eq true and userType eq 'member'
-        group:
-          filter: >
-            securityEnabled eq false
-            and mailEnabled eq true
-            and groupTypes/any(c:c+eq+'Unified')
-        schedule:
-          frequency: PT1H
-          timeout: PT50M
   import:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
@@ -92,9 +78,10 @@ catalog:
     - allow: [Component,System,API,Resource,Location,Domain,Template,user,group,department]
   locations:
 
+
     # External catalog data
-    # - type: url
-    #   target: https://github.com/Papliba/backstage-entities/blob/main/all.yaml
+    - type: url
+      target: https://github.com/Papliba/backstage-entities/blob/main/all.yaml
 
     # # Organization data
     # - type: url

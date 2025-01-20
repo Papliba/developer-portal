@@ -55,5 +55,6 @@ backend.add(import('@backstage/plugin-auth-backend-module-github-provider'));
 
 // Azure AD
 backend.add(import('@backstage/plugin-catalog-backend-module-msgraph'));
+backend.add(import('@backstage/plugin-auth-backend-module-microsoft-provider'));
 
 backend.start();
